@@ -5,6 +5,24 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const genericBaseUrls: Record<string, string> = {
+  Google: "https://generativelanguage.googleapis.com/v1beta/openai",
+  Mistral: "https://api.mistral.ai/v1",
+  Groq: "https://api.groq.com/openai/v1",
+  Cohere: "https://api.cohere.ai/v1",
+  Perplexity: "https://api.perplexity.ai",
+  Together: "https://api.together.xyz/v1",
+  Fireworks: "https://api.fireworks.ai/inference/v1",
+  OpenRouter: "https://openrouter.ai/api/v1",
+  xAI: "https://api.x.ai/v1",
+  "AI21 Labs": "https://api.ai21.com/studio/v1",
+  Alibaba: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+};
+
+function resolveGenericBaseUrl(providerLabel: string): string {
+  return genericBaseUrls[providerLabel] || "";
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -83,8 +101,12 @@ Deno.serve(async (req) => {
       const baseUrl = keyData.provider === "deepseek"
         ? (keyData.base_url || "https://api.deepseek.com")
         : keyData.provider === "generic"
-        ? keyData.base_url
+        ? (keyData.base_url || resolveGenericBaseUrl(keyData.provider_label))
         : "https://api.openai.com/v1";
+
+      if (!baseUrl) {
+        throw new Error("No base URL configured for this provider. Please edit the key and set a base URL.");
+      }
 
       const response = await fetch(`${baseUrl}/chat/completions`, {
         method: "POST",

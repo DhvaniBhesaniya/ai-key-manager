@@ -5,7 +5,21 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-function getProviderConfig(provider: string, baseUrl: string | null) {
+const genericBaseUrls: Record<string, string> = {
+  Google: "https://generativelanguage.googleapis.com/v1beta/openai",
+  Mistral: "https://api.mistral.ai/v1",
+  Groq: "https://api.groq.com/openai/v1",
+  Cohere: "https://api.cohere.ai/v1",
+  Perplexity: "https://api.perplexity.ai",
+  Together: "https://api.together.xyz/v1",
+  Fireworks: "https://api.fireworks.ai/inference/v1",
+  OpenRouter: "https://openrouter.ai/api/v1",
+  xAI: "https://api.x.ai/v1",
+  "AI21 Labs": "https://api.ai21.com/studio/v1",
+  Alibaba: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+};
+
+function getProviderConfig(provider: string, baseUrl: string | null, providerLabel: string) {
   switch (provider) {
     case "openai":
       return { url: "https://api.openai.com/v1/chat/completions", headerKey: "Authorization", headerPrefix: "Bearer " };
@@ -13,8 +27,10 @@ function getProviderConfig(provider: string, baseUrl: string | null) {
       return { url: "https://api.anthropic.com/v1/messages", headerKey: "x-api-key", headerPrefix: "" };
     case "deepseek":
       return { url: baseUrl ? `${baseUrl}/chat/completions` : "https://api.deepseek.com/chat/completions", headerKey: "Authorization", headerPrefix: "Bearer " };
-    case "generic":
-      return { url: baseUrl ? `${baseUrl}/chat/completions` : "", headerKey: "Authorization", headerPrefix: "Bearer " };
+    case "generic": {
+      const resolved = baseUrl || genericBaseUrls[providerLabel] || "";
+      return { url: resolved ? `${resolved}/chat/completions` : "", headerKey: "Authorization", headerPrefix: "Bearer " };
+    }
     default:
       return { url: baseUrl || "", headerKey: "Authorization", headerPrefix: "Bearer " };
   }
@@ -45,7 +61,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const config = getProviderConfig(keyData.provider, keyData.base_url);
+    const config = getProviderConfig(keyData.provider, keyData.base_url, keyData.provider_label);
     const start = Date.now();
     let status = "valid";
     let latencyMs = 0;
