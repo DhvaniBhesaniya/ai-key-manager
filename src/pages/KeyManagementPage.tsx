@@ -114,7 +114,7 @@ export default function KeyManagementPage() {
         ...f,
         provider_label: label,
         provider: preset.provider,
-        model_name: preset.model || f.model_name,
+        model_name: preset.models[0] || f.model_name,
         base_url: preset.base_url,
       }));
     } else {
