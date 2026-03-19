@@ -14,7 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      api_keys: {
+        Row: {
+          api_key_encrypted: string
+          base_url: string | null
+          created_at: string
+          id: string
+          last_checked_at: string | null
+          last_latency_ms: number | null
+          last_used_at: string | null
+          max_tokens: number | null
+          model_name: string
+          provider: Database["public"]["Enums"]["ai_provider"]
+          provider_label: string
+          status: Database["public"]["Enums"]["key_status"]
+          system_prompt: string | null
+          temperature: number | null
+          token_limit: number | null
+          top_p: number | null
+          total_tokens_used: number | null
+          updated_at: string
+        }
+        Insert: {
+          api_key_encrypted: string
+          base_url?: string | null
+          created_at?: string
+          id?: string
+          last_checked_at?: string | null
+          last_latency_ms?: number | null
+          last_used_at?: string | null
+          max_tokens?: number | null
+          model_name: string
+          provider?: Database["public"]["Enums"]["ai_provider"]
+          provider_label: string
+          status?: Database["public"]["Enums"]["key_status"]
+          system_prompt?: string | null
+          temperature?: number | null
+          token_limit?: number | null
+          top_p?: number | null
+          total_tokens_used?: number | null
+          updated_at?: string
+        }
+        Update: {
+          api_key_encrypted?: string
+          base_url?: string | null
+          created_at?: string
+          id?: string
+          last_checked_at?: string | null
+          last_latency_ms?: number | null
+          last_used_at?: string | null
+          max_tokens?: number | null
+          model_name?: string
+          provider?: Database["public"]["Enums"]["ai_provider"]
+          provider_label?: string
+          status?: Database["public"]["Enums"]["key_status"]
+          system_prompt?: string | null
+          temperature?: number | null
+          token_limit?: number | null
+          top_p?: number | null
+          total_tokens_used?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      usage_history: {
+        Row: {
+          api_key_id: string
+          completion_tokens: number | null
+          created_at: string
+          error_message: string | null
+          id: string
+          latency_ms: number | null
+          prompt_tokens: number | null
+          status: string | null
+          total_tokens: number | null
+        }
+        Insert: {
+          api_key_id: string
+          completion_tokens?: number | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          prompt_tokens?: number | null
+          status?: string | null
+          total_tokens?: number | null
+        }
+        Update: {
+          api_key_id?: string
+          completion_tokens?: number | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          prompt_tokens?: number | null
+          status?: string | null
+          total_tokens?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "usage_history_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +129,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      ai_provider: "openai" | "claude" | "deepseek" | "generic"
+      key_status: "valid" | "invalid" | "rate_limited" | "expired" | "unchecked"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +257,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      ai_provider: ["openai", "claude", "deepseek", "generic"],
+      key_status: ["valid", "invalid", "rate_limited", "expired", "unchecked"],
+    },
   },
 } as const
