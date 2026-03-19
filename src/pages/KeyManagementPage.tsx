@@ -39,6 +39,8 @@ export default function KeyManagementPage() {
   const [editingKey, setEditingKey] = useState<ApiKey | null>(null);
   const [form, setForm] = useState(defaultForm);
 
+  const currentModels = providerPresets[form.provider_label]?.models || [];
+
   const { data: keys = [], isLoading } = useQuery({
     queryKey: ["api-keys"],
     queryFn: fetchApiKeys,
