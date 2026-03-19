@@ -26,11 +26,11 @@ const defaultForm = {
   system_prompt: "You are a helpful assistant.",
 };
 
-const providerPresets: Record<string, { provider: ApiKey["provider"]; model: string; base_url: string }> = {
-  OpenAI: { provider: "openai", model: "gpt-4o-mini", base_url: "" },
-  Claude: { provider: "claude", model: "claude-3-5-sonnet-20241022", base_url: "" },
-  DeepSeek: { provider: "deepseek", model: "deepseek-chat", base_url: "https://api.deepseek.com" },
-  "Custom (OpenAI-compatible)": { provider: "generic", model: "", base_url: "" },
+const providerPresets: Record<string, { provider: ApiKey["provider"]; models: string[]; base_url: string }> = {
+  OpenAI: { provider: "openai", models: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo", "o1", "o1-mini", "o3-mini"], base_url: "" },
+  Claude: { provider: "claude", models: ["claude-sonnet-4-20250514", "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022", "claude-3-opus-20240229", "claude-3-haiku-20240307"], base_url: "" },
+  DeepSeek: { provider: "deepseek", models: ["deepseek-chat", "deepseek-coder", "deepseek-reasoner"], base_url: "https://api.deepseek.com" },
+  "Custom (OpenAI-compatible)": { provider: "generic", models: [], base_url: "" },
 };
 
 export default function KeyManagementPage() {
@@ -38,6 +38,8 @@ export default function KeyManagementPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingKey, setEditingKey] = useState<ApiKey | null>(null);
   const [form, setForm] = useState(defaultForm);
+
+  const currentModels = providerPresets[form.provider_label]?.models || [];
 
   const { data: keys = [], isLoading } = useQuery({
     queryKey: ["api-keys"],
@@ -114,7 +116,7 @@ export default function KeyManagementPage() {
         ...f,
         provider_label: label,
         provider: preset.provider,
-        model_name: preset.model || f.model_name,
+        model_name: preset.models[0] || f.model_name,
         base_url: preset.base_url,
       }));
     } else {
@@ -222,11 +224,23 @@ export default function KeyManagementPage() {
                   </div>
                   <div>
                     <Label className="text-xs">Model Name</Label>
-                    <Input
-                      className="mt-1 font-mono text-xs"
-                      value={form.model_name}
-                      onChange={(e) => setForm((f) => ({ ...f, model_name: e.target.value }))}
-                    />
+                    {currentModels.length > 0 ? (
+                      <Select value={form.model_name} onValueChange={(v) => setForm((f) => ({ ...f, model_name: v }))}>
+                        <SelectTrigger className="mt-1 font-mono text-xs"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {currentModels.map((m) => (
+                            <SelectItem key={m} value={m} className="font-mono text-xs">{m}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Input
+                        className="mt-1 font-mono text-xs"
+                        placeholder="Enter model name"
+                        value={form.model_name}
+                        onChange={(e) => setForm((f) => ({ ...f, model_name: e.target.value }))}
+                      />
+                    )}
                   </div>
                   <div>
                     <Label className="text-xs">Base URL (optional)</Label>
