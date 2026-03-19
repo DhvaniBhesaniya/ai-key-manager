@@ -222,11 +222,23 @@ export default function KeyManagementPage() {
                   </div>
                   <div>
                     <Label className="text-xs">Model Name</Label>
-                    <Input
-                      className="mt-1 font-mono text-xs"
-                      value={form.model_name}
-                      onChange={(e) => setForm((f) => ({ ...f, model_name: e.target.value }))}
-                    />
+                    {currentModels.length > 0 ? (
+                      <Select value={form.model_name} onValueChange={(v) => setForm((f) => ({ ...f, model_name: v }))}>
+                        <SelectTrigger className="mt-1 font-mono text-xs"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {currentModels.map((m) => (
+                            <SelectItem key={m} value={m} className="font-mono text-xs">{m}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Input
+                        className="mt-1 font-mono text-xs"
+                        placeholder="Enter model name"
+                        value={form.model_name}
+                        onChange={(e) => setForm((f) => ({ ...f, model_name: e.target.value }))}
+                      />
+                    )}
                   </div>
                   <div>
                     <Label className="text-xs">Base URL (optional)</Label>
