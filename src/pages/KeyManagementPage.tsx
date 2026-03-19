@@ -27,9 +27,21 @@ const defaultForm = {
 };
 
 const providerPresets: Record<string, { provider: ApiKey["provider"]; models: string[]; base_url: string }> = {
-  OpenAI: { provider: "openai", models: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo", "o1", "o1-mini", "o3-mini"], base_url: "" },
-  Claude: { provider: "claude", models: ["claude-sonnet-4-20250514", "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022", "claude-3-opus-20240229", "claude-3-haiku-20240307"], base_url: "" },
+  OpenAI: { provider: "openai", models: ["gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo", "o3", "o3-mini", "o1", "o1-mini", "o1-pro"], base_url: "" },
+  Claude: { provider: "claude", models: ["claude-opus-4-20250514", "claude-sonnet-4-20250514", "claude-3-7-sonnet-20250219", "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022", "claude-3-opus-20240229", "claude-3-haiku-20240307"], base_url: "" },
   DeepSeek: { provider: "deepseek", models: ["deepseek-chat", "deepseek-coder", "deepseek-reasoner"], base_url: "https://api.deepseek.com" },
+  Google: { provider: "generic", models: ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-1.5-pro", "gemini-1.5-flash"], base_url: "https://generativelanguage.googleapis.com/v1beta/openai" },
+  Mistral: { provider: "generic", models: ["mistral-large-latest", "mistral-medium-latest", "mistral-small-latest", "codestral-latest", "open-mistral-nemo", "open-mixtral-8x22b", "pixtral-large-latest"], base_url: "https://api.mistral.ai/v1" },
+  Meta: { provider: "generic", models: ["llama-4-maverick-17b-128e", "llama-4-scout-17b-16e", "llama-3.3-70b", "llama-3.1-405b", "llama-3.1-70b", "llama-3.1-8b"], base_url: "" },
+  Groq: { provider: "generic", models: ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "llama3-70b-8192", "mixtral-8x7b-32768", "gemma2-9b-it"], base_url: "https://api.groq.com/openai/v1" },
+  Cohere: { provider: "generic", models: ["command-r-plus", "command-r", "command-light", "command-nightly"], base_url: "https://api.cohere.ai/v1" },
+  Perplexity: { provider: "generic", models: ["sonar-pro", "sonar", "sonar-deep-research", "sonar-reasoning-pro", "sonar-reasoning"], base_url: "https://api.perplexity.ai" },
+  Together: { provider: "generic", models: ["meta-llama/Llama-3.3-70B-Instruct-Turbo", "meta-llama/Llama-3.1-405B-Instruct-Turbo", "mistralai/Mixtral-8x22B-Instruct-v0.1", "Qwen/Qwen2.5-72B-Instruct-Turbo", "deepseek-ai/DeepSeek-R1"], base_url: "https://api.together.xyz/v1" },
+  Fireworks: { provider: "generic", models: ["accounts/fireworks/models/llama-v3p3-70b-instruct", "accounts/fireworks/models/mixtral-8x22b-instruct", "accounts/fireworks/models/qwen2p5-72b-instruct"], base_url: "https://api.fireworks.ai/inference/v1" },
+  OpenRouter: { provider: "generic", models: ["openai/gpt-4o", "anthropic/claude-3.5-sonnet", "google/gemini-2.0-flash-exp", "meta-llama/llama-3.3-70b-instruct", "deepseek/deepseek-r1"], base_url: "https://openrouter.ai/api/v1" },
+  xAI: { provider: "generic", models: ["grok-3", "grok-3-mini", "grok-2", "grok-2-mini"], base_url: "https://api.x.ai/v1" },
+  "AI21 Labs": { provider: "generic", models: ["jamba-1.5-large", "jamba-1.5-mini"], base_url: "https://api.ai21.com/studio/v1" },
+  Alibaba: { provider: "generic", models: ["qwen-max", "qwen-plus", "qwen-turbo", "qwen-long", "qwen2.5-72b-instruct"], base_url: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1" },
   "Custom (OpenAI-compatible)": { provider: "generic", models: [], base_url: "" },
 };
 
