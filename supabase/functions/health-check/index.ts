@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const config = getProviderConfig(keyData.provider, keyData.base_url);
+    const config = getProviderConfig(keyData.provider, keyData.base_url, keyData.provider_label);
     const start = Date.now();
     let status = "valid";
     let latencyMs = 0;
