@@ -27,8 +27,10 @@ function getProviderConfig(provider: string, baseUrl: string | null) {
       return { url: "https://api.anthropic.com/v1/messages", headerKey: "x-api-key", headerPrefix: "" };
     case "deepseek":
       return { url: baseUrl ? `${baseUrl}/chat/completions` : "https://api.deepseek.com/chat/completions", headerKey: "Authorization", headerPrefix: "Bearer " };
-    case "generic":
-      return { url: baseUrl ? `${baseUrl}/chat/completions` : "", headerKey: "Authorization", headerPrefix: "Bearer " };
+    case "generic": {
+      const resolved = baseUrl || "";
+      return { url: resolved ? `${resolved}/chat/completions` : "", headerKey: "Authorization", headerPrefix: "Bearer " };
+    }
     default:
       return { url: baseUrl || "", headerKey: "Authorization", headerPrefix: "Bearer " };
   }
