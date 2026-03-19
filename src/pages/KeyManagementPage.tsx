@@ -26,11 +26,11 @@ const defaultForm = {
   system_prompt: "You are a helpful assistant.",
 };
 
-const providerPresets: Record<string, { provider: ApiKey["provider"]; model: string; base_url: string }> = {
-  OpenAI: { provider: "openai", model: "gpt-4o-mini", base_url: "" },
-  Claude: { provider: "claude", model: "claude-3-5-sonnet-20241022", base_url: "" },
-  DeepSeek: { provider: "deepseek", model: "deepseek-chat", base_url: "https://api.deepseek.com" },
-  "Custom (OpenAI-compatible)": { provider: "generic", model: "", base_url: "" },
+const providerPresets: Record<string, { provider: ApiKey["provider"]; models: string[]; base_url: string }> = {
+  OpenAI: { provider: "openai", models: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo", "o1", "o1-mini", "o3-mini"], base_url: "" },
+  Claude: { provider: "claude", models: ["claude-sonnet-4-20250514", "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022", "claude-3-opus-20240229", "claude-3-haiku-20240307"], base_url: "" },
+  DeepSeek: { provider: "deepseek", models: ["deepseek-chat", "deepseek-coder", "deepseek-reasoner"], base_url: "https://api.deepseek.com" },
+  "Custom (OpenAI-compatible)": { provider: "generic", models: [], base_url: "" },
 };
 
 export default function KeyManagementPage() {
