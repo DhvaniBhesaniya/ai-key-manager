@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 
 const defaultForm = {
-  provider: "openai" as const,
+  provider: "openai" as ApiKey["provider"],
   provider_label: "OpenAI",
   api_key_encrypted: "",
   model_name: "gpt-4o-mini",
