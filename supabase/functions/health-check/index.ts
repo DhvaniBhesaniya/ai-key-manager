@@ -19,7 +19,7 @@ const genericBaseUrls: Record<string, string> = {
   Alibaba: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
 };
 
-function getProviderConfig(provider: string, baseUrl: string | null) {
+function getProviderConfig(provider: string, baseUrl: string | null, providerLabel: string) {
   switch (provider) {
     case "openai":
       return { url: "https://api.openai.com/v1/chat/completions", headerKey: "Authorization", headerPrefix: "Bearer " };
@@ -28,7 +28,7 @@ function getProviderConfig(provider: string, baseUrl: string | null) {
     case "deepseek":
       return { url: baseUrl ? `${baseUrl}/chat/completions` : "https://api.deepseek.com/chat/completions", headerKey: "Authorization", headerPrefix: "Bearer " };
     case "generic": {
-      const resolved = baseUrl || "";
+      const resolved = baseUrl || genericBaseUrls[providerLabel] || "";
       return { url: resolved ? `${resolved}/chat/completions` : "", headerKey: "Authorization", headerPrefix: "Bearer " };
     }
     default:
