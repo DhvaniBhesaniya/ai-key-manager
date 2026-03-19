@@ -83,8 +83,12 @@ Deno.serve(async (req) => {
       const baseUrl = keyData.provider === "deepseek"
         ? (keyData.base_url || "https://api.deepseek.com")
         : keyData.provider === "generic"
-        ? keyData.base_url
+        ? (keyData.base_url || resolveGenericBaseUrl(keyData.provider_label))
         : "https://api.openai.com/v1";
+
+      if (!baseUrl) {
+        throw new Error("No base URL configured for this provider. Please edit the key and set a base URL.");
+      }
 
       const response = await fetch(`${baseUrl}/chat/completions`, {
         method: "POST",
